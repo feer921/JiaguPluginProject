@@ -1,0 +1,55 @@
+// 本 gradle文件 是将 库工程或者插件发布到 Jcenter 仓库中的配置脚本
+//buildscript {
+//    dependencies {
+////        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+//        //
+//        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
+//    }
+//}
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+
+def keystoreProperties = new Properties()
+
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+String jfrogUserName = keystoreProperties['jfrogUserName']
+String jfrogApiKey = keystoreProperties['jfrogApiKey']
+
+apply plugin: 'com.jfrog.bintray' //应用Jfrog 的插件
+//plugins{//Only Project and Settings build scripts can contain plugins {} blocks
+//    id('com.jfrog.bintray')
+//}
+
+
+bintray {
+    user = jfrogUserName
+    key = jfrogApiKey
+    pkg {
+        repo = 'generic'
+        name = 'gradle-project'
+        userOrg = 'bintray_user'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/bintray/gradle-bintray-plugin.git'
+    }
+
+    version {
+        name = '1.0-Final'
+        desc = 'Gradle Bintray Plugin 1.0 final'
+        released  = new Date()
+        vcsTag = '1.3.0'
+        attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+    }
+
+
+}
+
+//publishing {
+//    publications {
+//        MyPublication(MavenPublication) {
+//            from components.java
+//            groupId 'org.jfrog.gradle.sample'
+//            artifactId 'gradle-project'
+//            version '1.1'
+//        }
+//    }
+//}

@@ -1,0 +1,3 @@
+include ':JiaGuPlugin'
+include ':app'
+rootProject.name = "JiaguPluginProject"
