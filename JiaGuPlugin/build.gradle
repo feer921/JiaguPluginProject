@@ -1,10 +1,11 @@
 plugins {
     id 'java-library'
     id 'kotlin'
-    id 'com.jfrog.bintray'
 }
-
-println "in JiaGuPlugin project config ---------------------------"
+group 'com.fee.jiaguplugin'
+version 1.1
+apply from: 'bintray.gradle'
+println "in JiaGuPlugin project config -----[${group},$version]----------------------"
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
@@ -16,18 +17,3 @@ dependencies {
     implementation "com.android.tools.build:gradle:4.1.0" //本 Java库也需要依赖 安卓的 gradle 插件,来拿到相关的类
     implementation 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
 }
-//----------  上传到 本地 maven仓库的 插件
-//apply plugin: 'maven-publish'
-
-apply from: 'bintray.gradle'
-
-//publishing{
-//    publications{
-//        JiaguPlugin(MavenPublication){
-//            from components.java
-//            groupId 'com.fee.jiaguplugin'
-//            artifactId 'jiagu'
-//            version '1.0'
-//        }
-//    }
-//}

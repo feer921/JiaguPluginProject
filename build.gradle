@@ -4,13 +4,12 @@ buildscript {
     repositories {
         google()
         jcenter()
-        mavenLocal()//依赖 本地的仓库，就可以找到 发布到本地的依赖库
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
-        classpath "com.fee.jiaguplugin:jiagu:1.0"//因为该插件发布在本地仓库
+//        classpath "com.fee.jiaguplugin:jiagu:1.0"//因为该插件发布在本地仓库
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
@@ -21,7 +20,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        mavenLocal()
     }
 }
 
