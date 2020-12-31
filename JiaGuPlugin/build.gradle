@@ -3,7 +3,7 @@ plugins {
     id 'kotlin'
 }
 group 'com.fee.jiaguplugin'
-version 1.1
+version 1.2
 apply from: 'bintray.gradle'
 println "in JiaGuPlugin project config -----[${group},$version]----------------------"
 java {
@@ -14,6 +14,6 @@ java {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation gradleApi()//这样就能引用到 gradle的SDK了
-    implementation "com.android.tools.build:gradle:4.1.0" //本 Java库也需要依赖 安卓的 gradle 插件,来拿到相关的类
+    implementation "com.android.tools.build:gradle:4.1.1" //本 Java库也需要依赖 安卓的 gradle 插件,来拿到相关的类
     implementation 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
 }

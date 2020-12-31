@@ -27,6 +27,101 @@ apply plugin: 'maven-publish' // 应用 maven 发布插件，该插件来发布�
 //    id('com.jfrog.bintray')
 //}
 
+
+//File projectBuildLibsDir = new File("$buildDir/libs")
+
+// Create the pom configuration:
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "feer921"
+            name "fee"
+            email "feer921@163.com"
+        }
+    }
+
+    scm {
+        url "https://github.com/feer921/JiaguPluginProject"
+    }
+}
+// 生成sourceJar和javaDocJar构件
+task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+    from sourceSets.main.allSource
+    classifier = 'sources'
+//    archiveClassifier = 'sources'
+}
+
+//task javadoc(type: Javadoc) {
+//    failOnError false
+////    source = android.sourceSets.main.java.sourceFiles
+//    source = sourceSets.main.allSource
+//    classpath += project.files(java.getBootClasspath().join(File.pathSeparator))
+//    classpath += configurations.compile
+//}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+//    archiveClassifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+publishing{
+    def groupName = this.group
+    def curProject = this
+    publications{
+        pubJiaguPlugin(MavenPublication){MavenPublication pubConfig ->
+//            def filePrefixName = "$buildDir/libs/${groupName}-${this.version}"
+            def filePrefixName = "$buildDir/libs/${curProject.getName()}-${this.version}"
+            println(" filePrefixName = $filePrefixName")
+//            pubConfig.artifacts(projectBuildLibsDir.list().toList())
+
+//            File[] s = new File("$buildDir/libs/").listFiles()
+//            s.each { aFile ->
+//                println("aFile = $aFile")
+//                pubConfig.artifact(aFile.absolutePath)
+//            }
+            pubConfig.artifact("${filePrefixName}.jar")
+            pubConfig.artifact("${filePrefixName}-javadoc.jar")
+            pubConfig.artifact("${filePrefixName}-sources.jar")
+            pubConfig.from components.kotlin
+            groupId groupName
+            artifactId 'jiagu'
+            version this.version
+
+            pubConfig.pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'A Gradle plugin,use to strengthen Apk file')
+                root.appendNode('name', 'jiaguPlugin')
+                root.appendNode('url', 'https://github.com/feer921/JiaguPluginProject')
+                root.children().last() + pomConfig
+            }
+
+            //这个是 构建 安卓工程需要的
+//            pubConfig.pom.withXml {
+//                def dependenciesNode = asNode().appendNode('dependencies')
+//                // Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+//                configurations.implementation.allDependencies.each {
+//                    // Ensure dependencies such as fileTree are not included in the pom.
+//                    if (it.name != 'unspecified') {
+//                        def dependencyNode = dependenciesNode.appendNode('dependency')
+//                        dependencyNode.appendNode('groupId', it.group)
+//                        dependencyNode.appendNode('artifactId', it.name)
+//                        dependencyNode.appendNode('version', it.version)
+//                    }
+//                }
+//            }
+        }
+    }
+}
+
 bintray {//该扩展为配置 Jcenter上 仓库信息
     user = jfrogUserName
     key = jfrogApiKey
@@ -48,63 +143,15 @@ bintray {//该扩展为配置 Jcenter上 仓库信息
 
         }
     }
-    publications = ['JiaguPlugin'] //'JiaguPlugin'与下面的publishing闭包里的名称对应
+    publications = ['pubJiaguPlugin'] //'pubJiaguPlugin'与下面的publishing闭包里的名称对应
     publish true //上传后立即发布到Bintray平台
 
 }
-publishing{
-    def groupName = this.group
-    publications{
-        JiaguPlugin(MavenPublication){
-            artifact("$buildDir/libs/${groupName}-${this.version}.jar")
-//            artifact sourcesJar
-//            artifact javadocJar
 
-            from components.kotlin
-            groupId groupName
-            artifactId 'jiagu'
-            version this.version
-//            pom.withXml {
-//                def dependenciesNode = asNode().appendNode('dependencies')
-//                // Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
-//                configurations.implementation.allDependencies.each {
-//                    // Ensure dependencies such as fileTree are not included in the pom.
-//                    if (it.name != 'unspecified') {
-//                        def dependencyNode = dependenciesNode.appendNode('dependency')
-//                        dependencyNode.appendNode('groupId', it.group)
-//                        dependencyNode.appendNode('artifactId', it.name)
-//                        dependencyNode.appendNode('version', it.version)
-//                    }
-//                }
-//            }
-        }
-    }
-}
-
-// 生成sourceJar和javaDocJar构件
-task sourcesJar(type: Jar) {
-//    from android.sourceSets.main.java.srcDirs
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
-
-//task javadoc(type: Javadoc) {
-//    failOnError false
-////    source = android.sourceSets.main.java.sourceFiles
-//    source = sourceSets.main.allSource
-//    classpath += project.files(java.getBootClasspath().join(File.pathSeparator))
-//    classpath += configurations.compile
+//artifacts {
+//    archives sourcesJar
+//    archives javadocJar
 //}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
 
 
 
