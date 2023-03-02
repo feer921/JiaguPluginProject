@@ -1,53 +1,51 @@
 //import com.android.build.api.variant.impl.VariantOutputImpl
+
 import com.android.build.gradle.api.ApplicationVariant
-import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 
 import java.text.SimpleDateFormat
-
 //import com.android.build.gradle.tasks.ManifestProcessorTask
 
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-//    id 'com.fee.jiagu'//引用 自定义的插件 该ID名字为 [JiaGuPlugin]->[src->main->resources->[com.fee.jiagu].properties
+    id 'com.fee.jiagu'//引用 自定义的插件 该ID名字为 [JiaGuPlugin]->[src->main->resources->[com.fee.jiagu].properties
 }
 //读取项目根目录下版本控制的keystore.properties文件获取签名信息 ---@start
 def keystorePropertiesFile = rootProject.file('keystore.properties')
 
 def keystoreProperties = new Properties()
 
-//keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
-String storePassWordStr = keystoreProperties['storePassword']
+String storePassWordStr = keystoreProperties.getProperty('storePassword',"")
 
-String keyPassWordStr = keystoreProperties['keyPassword']
+String keyPassWordStr = keystoreProperties.getProperty('keyPassword',"")
+String keyAliasStr = keystoreProperties.getProperty('keyAlias',"")
+String keyStoreFile = keystoreProperties.getProperty('storeFile',"")
+String accountStr = keystoreProperties.getProperty('platformAccount',"")
+String accountPwStr = keystoreProperties.getProperty('platformAccountPw',"")
 
-String keyAliasStr = keystoreProperties['keyAlias']
 
-String keyStoreFile = keystoreProperties['storeFile']
-String accountStr = keystoreProperties['platformAccount']
-String accountPwStr = keystoreProperties['platformAccountPw']
-
-//jiagu{
-//    platformAccount accountStr
-//    platformAccountPw accountPwStr
-//    platformJarFilePath 'D:\\Program Files (x86)\\jiagu\\jiagu.jar'
-//    jiaguOutputDirPath 'D:\\outputs\\test'
-//    keyStoreFilePath keyStoreFile//配置自己的签名文件路径
-//    keyStorePw storePassWordStr// Key Store库密钥
-//    keyStoreKeyAlias keyAliasStr //Key Store 别名
-//    keyStoreKeyPw keyPassWordStr //Key的密钥
+jiagu {
+    platformAccount accountStr
+    platformAccountPw accountPwStr
+    platformJarFilePath 'D:\\Program Files (x86)\\jiagu360\\jiagu\\jiagu.jar'
+    jiaguOutputDirPath 'D:\\outputs\\test'
+    keyStoreFilePath keyStoreFile//配置自己的签名文件路径
+    keyStorePw storePassWordStr// Key Store库密钥
+    keyStoreKeyAlias keyAliasStr //Key Store 别名
+    keyStoreKeyPw keyPassWordStr //Key的密钥
 //    multyChannelsFilePath 'D:\\outputs\\test\\channels-copy.txt'
-//}
+}
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "com.fee.peekgradlesrc"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 

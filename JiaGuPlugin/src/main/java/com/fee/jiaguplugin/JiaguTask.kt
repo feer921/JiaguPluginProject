@@ -39,10 +39,13 @@ open class JiaguTask @Inject constructor(private val apkFile: File, private val 
             //执行命令行命令
             //-login <username> 			首次使用必须先登录 <360用户名>
             //		<password>				<登录密码>
+            val platformAccount = jiaguConfigs.platformAccount
+            val platformPw = jiaguConfigs.platformAccountPw
             val cmdParams = CmdSpell().javaCmd()._jar().append(platformJarFilePath).append("-login")
-                .append(jiaguConfigs.platformAccount)
-                .append(jiaguConfigs.platformAccountPw)
-            println("$TAG --> doJiaguWork() start to login jiagu platform")
+                .append(platformAccount)
+                .append(platformPw)
+            println("$TAG --> doJiaguWork() start to login jiagu platform,user: $platformAccount," +
+                    "pw: $platformPw")
             execSpec.commandLine = cmdParams
         }
 
