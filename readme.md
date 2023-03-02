@@ -4,7 +4,7 @@
 
 将本工程使用下载到(git)本地后，使用 AS打开并编译好后，打开AS上的 **gradle** 视图
 
-![image-20230302194733743](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230302194733743.png)
+![image-20230302194733743](https://github.com/feer921/JiaguPluginProject/blob/main/image-20230302194733743.png)
 
 可以看到 publishing组的相关任务，我们双击 publishJiaguPluginPublicationToMavenLocal 任务，将本插件发布到当前电脑的 maven 本地仓库中，以便接下来依赖使用。
 
@@ -61,7 +61,7 @@ allprojects {
 
 在上面的配置代码后，AS会提示需要让 **gradle** 对项目进行同步，在同步完成后，我们打开 **gradle** 视图面板，即会出现 jiagu组的 两个任务，双击任何一个任务即可对构建出的 **APK** 包进行加固、签名、多渠道
 
-![image-20230302193415896](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230302193415896.png)
+![image-20230302193415896](https://github.com/feer921/JiaguPluginProject/blob/main/image-20230302193415896.png)
 
 # 注
 
